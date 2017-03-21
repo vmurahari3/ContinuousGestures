@@ -1,38 +1,22 @@
 package com.example.ubicomp.continuousgestures;
 
+import android.app.Activity;
 import android.graphics.DashPathEffect;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.media.AudioManager;
-import android.media.ToneGenerator;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Button;
+import android.widget.TextView;
 
-import com.example.ubicomp.continuousgestures.Helpers.Buffer;
 import com.example.ubicomp.continuousgestures.Learning.DataAnalyzer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener {
-//    Buffer[] buffer_accel ;
-//
-//    Buffer buffer_accel_timestamp;
-//
-//    Buffer[] buffer_mag;
-//    Buffer buffer_mag_timestamp;
-//
-//    Buffer[] buffer_gyro;
-//    Buffer buffer_gyro_timestamp;
+public class MainActivity extends Activity implements SensorEventListener {
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private SensorManager mSensorManager;
     Sensor accelerometer;
@@ -48,48 +32,33 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private long prev_fire_timestamp, cur_timestamp;
     private DataAnalyzer mDataAnalyzer;
 
+    private HashMap<String, String> labelNameMap = new HashMap<String, String>();
+
+    private TextView resultTV;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         // initialize sensor stuff
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
 
         gyroscope =  mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-        Button test_mode = (Button) findViewById(R.id.test);
 
-//        // initialize buffers
-//        buffer_accel = new Buffer[]{new Buffer(buffer_size,3),new Buffer(buffer_size,3),new Buffer(buffer_size,3)};
-//        buffer_accel_timestamp = new Buffer(buffer_size,3);
-//
-//        buffer_mag = new Buffer[]{new Buffer(buffer_size,3),new Buffer(buffer_size,3),new Buffer(buffer_size,3)};
-//        buffer_mag_timestamp = new Buffer(buffer_size,3);
-//
-//        buffer_gyro =  new Buffer[]{new Buffer(buffer_size,3),new Buffer(buffer_size,3),new Buffer(buffer_size,3)};
-//        buffer_gyro_timestamp = new Buffer(buffer_size,3);
-
-//        test_mode.setOnClickListener(new View.OnClickListener(){
-//            public void onClick(View v){
-//                change_sensor_mode();
-//            }
-//        });
         mDataAnalyzer = new DataAnalyzer(this);
         for (int i  = 0; i<6 ; i++){
             sensor_values.add(new ArrayList<Double>());
         }
+
+        labelNameMap.put("10", "Clockwise");
+        labelNameMap.put("11", "Nod");
+        labelNameMap.put("12", "Whatsup");
+        labelNameMap.put("1_4_2_3_5", "Not detected");
+
+        resultTV = (TextView) findViewById(R.id.resultTV);
 
         // initialize classification stuff
         mDataAnalyzer.init();
@@ -107,23 +76,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     protected void onPause(){
         super.onPause();
-//        mSensorManager.unregisterListener(this);
+        mSensorManager.unregisterListener(this);
     }
-//    private void change_sensor_mode() {
-//        // @TODO change string literals to enum
-////        if ( status.equals("ON")){
-////            status = "OFF";
-////            mSensorManager.unregisterListener(this);
-////        }else{
-////            status = "ON";
-////            mSensorManager.registerListener(this,accelerometer,SensorMan        if( sensor_values.get(0).size() == 150 && sensor_values.get(3).size() == 150  ){
-//
-//
-//
-////            mSensorManager.registerListener(this,magnetometer,SensorManager.SENSOR_DELAY_FASTEST);
-////            mSensorManager.registerListener(this,gyroscope,SensorManager.SENSOR_DELAY_FASTEST);
-////
-////        }
+
 
 
     public void onSensorChanged(SensorEvent event) {
@@ -174,48 +129,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
 
         }
-
-
-
-
-//        if (buffer_gyro_timestamp.is_main_full) {
-//            double cur_energy = buffer_gyro[0].getEnergy(buffer_gyro_timestamp.getRawData());
-////            Log.d("hello", "this is the energy !!!!!!!!!!!!1" + cur_energy + "");
-//            if (cur_energy > threshold && !flag_sound_generated) {
-//                //generate sound
-//                Log.d("", "detected");
-//                flag_sound_generated = true;
-//                ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
-//                toneGen1.startTone(ToneGenerator.TONE_PROP_BEEP2, 150);
-//            }
-//        }
-
     }
 
     public void onAccuracyChanged(Sensor sensor, int accuracy){
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
     private void fire_classifier(){
         ArrayList<Double[]> ret = new ArrayList<>();
@@ -224,7 +141,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
         mDataAnalyzer.addTestSample(ret);
         String label = mDataAnalyzer.classifyGesture();
-        Log.d("hello", "result !!!!!!! " + label);
+        String name = labelNameMap.get(label);
+        Log.d(TAG, "result: " + name);
+        resultTV.setText(name);
     }
 
 

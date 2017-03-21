@@ -3,7 +3,6 @@ package com.example.ubicomp.continuousgestures.Learning;
 import android.content.Context;
 import android.util.Log;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -14,13 +13,11 @@ import com.example.ubicomp.continuousgestures.Constants.Constants;
 import weka.classifiers.AbstractClassifier;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
-import weka.classifiers.functions.LibSVM;
 import weka.classifiers.functions.SMO;
 import weka.classifiers.functions.supportVector.PolyKernel;
 import weka.core.Attribute;
 import weka.core.DenseInstance;
 import weka.core.Instances;
-import weka.core.SelectedTag;
 import weka.core.converters.ArffLoader;
 
 import com.example.ubicomp.continuousgestures.Helpers.Utils;
@@ -227,8 +224,8 @@ public class DataAnalyzer
 
                 distribution = classifier.distributionForInstance(arffTestInstances.lastInstance());
 
-                if(DEBUG) Log.d(TAG, "Distribution: "+Utils.doubleArray2CSVString(distribution));
-                if(DEBUG) Log.d(TAG, "Result: "+result);
+//                if(DEBUG) Log.d(TAG, "Distribution: "+Utils.doubleArray2CSVString(distribution));
+//                if(DEBUG) Log.d(TAG, "Result: "+result);
 
                 if(Double.isNaN(result)) { //Unary classifier returns NaN when a match is not found
                     return "No match! Try again.";
