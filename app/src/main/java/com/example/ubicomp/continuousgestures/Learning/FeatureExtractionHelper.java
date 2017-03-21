@@ -35,7 +35,7 @@ public class FeatureExtractionHelper
      */
     public ArrayList<Double> calculateFeatures(ArrayList<Double[]> dataArray)
     {
-        ArrayList<Double> calcValues = new ArrayList<Double>();
+        ArrayList<Double> calcValues = new ArrayList<>();
 
         // RMS for all channels
         for(Double elements : calculateRMS(dataArray)) calcValues.add(elements);
@@ -46,6 +46,9 @@ public class FeatureExtractionHelper
         // Mean for all channels
         for(Double elements : calculateMean(dataArray)) calcValues.add(elements);
 
+//		// Kurtosis for all channels
+//		for(Double elements : calculateKurtosis(dataArray)) calcValues.add(elements);
+
         //Energy for each channel
         for(Double elements : calculateSensorEnergy(dataArray)) calcValues.add(elements);
 
@@ -53,7 +56,7 @@ public class FeatureExtractionHelper
 //		for(Double elements: calculateCorrelation(dataArray)) calcValues.add(elements);
 
         // Power spectrum and statistics for all channels
-//		for(Double elements: calculateFFT(dataArray)) calcValues.add(elements);
+//		for(Double elements: calculateFFT(dataArray)) calcValues.add(elwements);
 
         // Cepstrum of the power spectrum and statistics
         //for(Double elements: calculateCepstrum()) calcValues.add(elements);
@@ -77,7 +80,7 @@ public class FeatureExtractionHelper
      */
     public ArrayList<Double> calculateRMS(ArrayList<Double[]> dataArray)
     {
-        ArrayList<Double> calcValues = new ArrayList<Double>();
+        ArrayList<Double> calcValues = new ArrayList<>();
         for (int i=0; i<dataArray.size(); i++)
         {
             double result = 0;
@@ -99,7 +102,7 @@ public class FeatureExtractionHelper
      */
     public ArrayList<Double> calculateStDev(ArrayList<Double[]> dataArray)
     {
-        ArrayList<Double> calcValues = new ArrayList<Double>();
+        ArrayList<Double> calcValues = new ArrayList<>();
         for (int i=0; i<dataArray.size(); i++)
         {
             double result = 0;
@@ -116,7 +119,7 @@ public class FeatureExtractionHelper
      */
     public ArrayList<Double> calculateMean(ArrayList<Double[]> dataArray)
     {
-        ArrayList<Double> calcValues = new ArrayList<Double>();
+        ArrayList<Double> calcValues = new ArrayList<>();
         for (int i=0; i<dataArray.size(); i++)
         {
             double result = 0;
@@ -126,6 +129,7 @@ public class FeatureExtractionHelper
         return calcValues;
     }
 
+
     /**
      * Method to calculate the energy per channel for the given window
      * @param dataArray
@@ -133,7 +137,7 @@ public class FeatureExtractionHelper
      */
     public ArrayList<Double> calculateSensorEnergy(ArrayList<Double[]> dataArray)
     {
-        ArrayList<Double> calcValues = new ArrayList<Double>();
+        ArrayList<Double> calcValues = new ArrayList<>();
         double result1 = 0;
         double result2 = 0;
         int nChannels = dataArray.size();
@@ -194,7 +198,7 @@ public class FeatureExtractionHelper
      */
     public ArrayList<Double> calculateCorrelation(double[][] dataArray)
     {
-        ArrayList<Double> calcValues = new ArrayList<Double>();
+        ArrayList<Double> calcValues = new ArrayList<>();
         Double result = 0.0;
 
         // New correlation calculator
@@ -239,7 +243,7 @@ public class FeatureExtractionHelper
      */
     public ArrayList<Double> calculateFFT(double[][] dataArray)
     {
-        ArrayList<Double> calcValues = new ArrayList<Double>();
+        ArrayList<Double> calcValues = new ArrayList<>();
 
         for(int i=0; i<Constants.NUM_OF_CHANNELS; i++)
         {
@@ -274,7 +278,7 @@ public class FeatureExtractionHelper
      */
     public ArrayList<Double> calculateCepstrum()
     {
-        ArrayList<Double> calcValues = new ArrayList<Double>();
+        ArrayList<Double> calcValues = new ArrayList<>();
         double[][] cepstrumValues = new double[Constants.NUM_OF_CHANNELS][Constants.WIN_SIZE];
 
         for(int i=0; i<Constants.NUM_OF_CHANNELS; i++)
@@ -520,7 +524,7 @@ public class FeatureExtractionHelper
         Random random_source = new Random();
 
         // output is squashed down
-        ArrayList<Double> calcValues = new ArrayList<Double>();
+        ArrayList<Double> calcValues = new ArrayList<>();
 
         // iterate over accelerometer channels
         for(int i=0; i<Constants.NUM_OF_ACCEL_CHANNELS; i++)
@@ -578,7 +582,10 @@ public class FeatureExtractionHelper
                         Log.e(TAG, "Standard deviation is <= 0");
                     }
 
-                    if(result == Double.NaN) Log.d(TAG, "NaN calculated");
+                    if(Double.isNaN(result) || Double.isInfinite(result)) {
+                        Log.d(TAG, "NaN calculated");
+                        result = 0.0;
+                    }
                     calcValues.add(result);
                 }
                 catch(Exception e)

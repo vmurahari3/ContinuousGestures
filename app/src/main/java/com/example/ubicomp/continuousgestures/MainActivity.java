@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.example.ubicomp.continuousgestures.Constants.Constants;
 import com.example.ubicomp.continuousgestures.Learning.DataAnalyzer;
 
 import java.util.ArrayList;
@@ -93,7 +94,7 @@ public class MainActivity extends Activity implements SensorEventListener {
             for(int i = 0; i<acceleration.length; i++ ){
                 sensor_values.get(i).add((double)acceleration[i]);
             }
-            if(sensor_values.get(0).size() > 150){
+            if(sensor_values.get(0).size() > Constants.WIN_SIZE){
                 for(int i =0; i< acceleration.length; i++){
                     sensor_values.get(i).remove(0);
                 }
@@ -106,14 +107,14 @@ public class MainActivity extends Activity implements SensorEventListener {
             for(int i = 0; i<gyro.length; i++ ){
                 sensor_values.get(i+3).add((double)gyro[i]);
             }
-            if(sensor_values.get(3).size() > 150){
+            if(sensor_values.get(3).size() > Constants.WIN_SIZE){
                 for(int i =0; i< gyro.length; i++){
                     sensor_values.get(i+3).remove(0);
                 }
             }
         }
 
-        if( sensor_values.get(0).size() == 150 && sensor_values.get(3).size() == 150  ) {
+        if( sensor_values.get(0).size() == Constants.WIN_SIZE && sensor_values.get(3).size() == Constants.WIN_SIZE) {
             // fire classifier
             if (!first_fire) {
                 first_fire = true;
@@ -122,7 +123,7 @@ public class MainActivity extends Activity implements SensorEventListener {
             }
             else{
                 // 10 percent overlap for a 3 sec window
-                if (( cur_timestamp - prev_fire_timestamp) > Math.pow(10,9)/3){
+                if (( cur_timestamp - prev_fire_timestamp) > Constants.SLIDE_SIZE){
                     fire_classifier();
                     prev_fire_timestamp = cur_timestamp;
                 }

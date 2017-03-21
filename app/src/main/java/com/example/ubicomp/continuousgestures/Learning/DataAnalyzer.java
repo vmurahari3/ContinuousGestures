@@ -377,7 +377,7 @@ public class DataAnalyzer
 
         try
         {
-            InputStream is = context.getAssets().open("null_class_model_final.arff");
+            InputStream is = context.getAssets().open("combined_gesture.arff");
 
             loader.setSource(is);
             arffTrainingInstances = loader.getStructure();
