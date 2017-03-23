@@ -103,7 +103,7 @@ public final class Constants {
     public static final String[] RUNTIME_MODE_LABELS = {"trainingMode", "testingMode"};
 
     /** Size of window used for classification */
-    public static final int WIN_SIZE = 300; // 6 sec @50Hz sampling rate
+    public static final int WIN_SIZE = 150; // 6 sec @50Hz sampling rate
     public static final long SLIDE_SIZE = (long) Math.pow(10,9)/3; // time in nano seconds. Duration is 1/3 of second
 
     /** Index of sensor axis of interest. x(0), y(1), z(2) */

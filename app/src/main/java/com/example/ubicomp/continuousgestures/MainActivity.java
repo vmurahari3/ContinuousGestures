@@ -57,7 +57,7 @@ public class MainActivity extends Activity implements SensorEventListener {
         labelNameMap.put("10", "Clockwise");
         labelNameMap.put("11", "Nod");
         labelNameMap.put("12", "Whatsup");
-        labelNameMap.put("1_4_2_3_5", "Not detected");
+        labelNameMap.put("13", "Not detected");
 
         resultTV = (TextView) findViewById(R.id.resultTV);
 
