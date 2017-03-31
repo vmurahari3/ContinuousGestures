@@ -103,9 +103,10 @@ public final class Constants {
     public static final String[] RUNTIME_MODE_LABELS = {"trainingMode", "testingMode"};
 
     /** Size of window used for classification */
-    public static final int WIN_SIZE = 150; // 6 sec @50Hz sampling rate
-    public static final long SLIDE_SIZE = (long) Math.pow(10,9)/3; // time in nano seconds. Duration is 1/3 of second
-
+    public static final int WIN_SIZE = 20; // 0.4 sec @50Hz sampling rate
+    public static final long SLIDE_SIZE = (long) 6 *  (long)Math.pow(10,7); // time in nano seconds. Duration is 0.06 second
+    public static final int OVERLAP = 3; // Overlap is used in the segmentation algorithm. The segmentation algorithm is only called after OVERLAP number of points
+    public static final double ENERGY_THRESHOLD = 0.2;
     /** Index of sensor axis of interest. x(0), y(1), z(2) */
     public static final int AXIS_OF_INTEREST_INDEx = 0;
 

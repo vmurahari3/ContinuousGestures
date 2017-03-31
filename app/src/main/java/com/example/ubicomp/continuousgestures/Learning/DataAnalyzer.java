@@ -377,7 +377,7 @@ public class DataAnalyzer
 
         try
         {
-            InputStream is = context.getAssets().open("model_without_clockwise.arff");
+            InputStream is = context.getAssets().open("segmentation_gesture_model.arff");
 
             loader.setSource(is);
             arffTrainingInstances = loader.getStructure();
