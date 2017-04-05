@@ -1,4 +1,4 @@
-package com.example.ubicomp.continuousgestures.Learning;
+package edu.gatech.ubicomp.continuousgestures.Learning;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import com.example.ubicomp.continuousgestures.Constants.Constants;
+import edu.gatech.ubicomp.continuousgestures.Constants.Constants;
 import weka.classifiers.AbstractClassifier;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
@@ -20,7 +20,7 @@ import weka.core.DenseInstance;
 import weka.core.Instances;
 import weka.core.converters.ArffLoader;
 
-import com.example.ubicomp.continuousgestures.Helpers.Utils;
+import edu.gatech.ubicomp.continuousgestures.Helpers.Utils;
 
 
 /**
@@ -101,21 +101,6 @@ public class DataAnalyzer
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-        //By default set a unary classifier
-
-
-//       else { //Multi-class classifier
-//            classifier = new SMO();
-//            String[] options = {"-M"};
-//            try {
-//                ((SMO) classifier).setOptions(options);
-////                ((LibSVM)classifier).setProbabilityEstimates(true);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
     }
 
 
@@ -254,7 +239,7 @@ public class DataAnalyzer
     public void setArffAttributesHeaders(String[] classLabels)
     {
         // Add RMS feature header
-        for(int i=0; i<Constants.NUM_OF_CHANNELS; i++)
+        for(int i = 0; i< Constants.NUM_OF_CHANNELS; i++)
         {
             arffAttributes.add(new Attribute(Constants.GESTURE_CHANNEL_LABELS[i] + "_RMS"));
         }

@@ -1,4 +1,4 @@
-package com.example.ubicomp.continuousgestures.Learning;
+package edu.gatech.ubicomp.continuousgestures.Learning;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.ubicomp.continuousgestures;
+package edu.gatech.ubicomp.continuousgestures;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

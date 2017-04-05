@@ -1,4 +1,4 @@
-package com.example.ubicomp.continuousgestures.Learning;
+package edu.gatech.ubicomp.continuousgestures.Learning;
 
 /**
  * Created by ubicomp on 3/14/17.
@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 import edu.emory.mathcs.jtransforms.fft.DoubleFFT_1D;
-import com.example.ubicomp.continuousgestures.Constants.Constants;
+import edu.gatech.ubicomp.continuousgestures.Constants.Constants;
 
 
 public class FeatureExtractionHelper

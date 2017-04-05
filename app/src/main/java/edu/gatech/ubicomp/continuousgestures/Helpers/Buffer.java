@@ -1,6 +1,4 @@
-package com.example.ubicomp.continuousgestures.Helpers;
-
-import android.util.Log;
+package edu.gatech.ubicomp.continuousgestures.Helpers;
 
 /**
  * Created by ubicomp on 3/2/17.

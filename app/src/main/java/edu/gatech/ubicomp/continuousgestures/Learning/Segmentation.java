@@ -1,8 +1,6 @@
-package com.example.ubicomp.continuousgestures.Helpers;
+package edu.gatech.ubicomp.continuousgestures.Learning;
 
-import android.util.Log;
-
-import com.example.ubicomp.continuousgestures.Constants.Constants;
+import edu.gatech.ubicomp.continuousgestures.Constants.Constants;
 
 import java.util.ArrayList;
 

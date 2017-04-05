@@ -1,4 +1,4 @@
-package com.example.ubicomp.continuousgestures.Helpers;
+package edu.gatech.ubicomp.continuousgestures.Helpers;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,9 +12,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import com.example.ubicomp.continuousgestures.Constants.Constants;
-import com.example.ubicomp.continuousgestures.Learning.PeakDetection;
-
+import edu.gatech.ubicomp.continuousgestures.Constants.Constants;
+import edu.gatech.ubicomp.continuousgestures.Learning.PeakDetection;
 
 
 public class Utils
@@ -159,7 +158,7 @@ public class Utils
         // Initialize return object
         ArrayList<ArrayList<Double>> output = new ArrayList<ArrayList<Double>>();
 
-        for(int i=0; i< Constants.NUM_OF_CHANNELS_WITH_INDEX; i++)
+        for(int i = 0; i< Constants.NUM_OF_CHANNELS_WITH_INDEX; i++)
         {
             // New arraylist<double> for each channel
             ArrayList<Double> channel = new ArrayList<Double>();

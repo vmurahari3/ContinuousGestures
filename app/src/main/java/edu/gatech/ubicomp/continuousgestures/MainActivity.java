@@ -1,7 +1,6 @@
-package com.example.ubicomp.continuousgestures;
+package edu.gatech.ubicomp.continuousgestures;
 
 import android.app.Activity;
-import android.graphics.DashPathEffect;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -10,19 +9,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.example.ubicomp.continuousgestures.Constants.Constants;
-import com.example.ubicomp.continuousgestures.Learning.DataAnalyzer;
+import edu.gatech.ubicomp.continuousgestures.Constants.Constants;
+import edu.gatech.ubicomp.continuousgestures.Learning.DataAnalyzer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.example.ubicomp.continuousgestures.Helpers.Segmentation;
+import edu.gatech.ubicomp.continuousgestures.Learning.Segmentation;
+import io.realm.Realm;
 
 public class MainActivity extends Activity implements SensorEventListener {
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private Realm realm;
+
     private SensorManager mSensorManager;
     Sensor accelerometer;
-    Sensor magnetometer;
     Sensor gyroscope;
     private String status = "OFF";
     //TODO remove this flag only for testing purpose
@@ -51,11 +52,10 @@ public class MainActivity extends Activity implements SensorEventListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(edu.gatech.ubicomp.continuousgestures.R.layout.activity_main);
         // initialize sensor stuff
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-
         gyroscope =  mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
         mDataAnalyzer = new DataAnalyzer(this);
@@ -69,13 +69,16 @@ public class MainActivity extends Activity implements SensorEventListener {
         labelNameMap.put("12", "Whatsup");
         labelNameMap.put("13", "Not detected");
 
-        resultTV = (TextView) findViewById(R.id.resultTV);
+        resultTV = (TextView) findViewById(edu.gatech.ubicomp.continuousgestures.R.id.resultTV);
 
         // initialize classification stuff
         mDataAnalyzer.init();
         // load arff file
         mDataAnalyzer.loadArffFile("file:///android_asset/null_class_model_final.arff");
         mDataAnalyzer.buildClassifier();
+
+        // Create the Realm instance
+        realm = Realm.getDefaultInstance();
     }
 
     protected void onResume(){
@@ -90,6 +93,11 @@ public class MainActivity extends Activity implements SensorEventListener {
         mSensorManager.unregisterListener(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close(); // Remember to close Realm when done.
+    }
 
 
     public void onSensorChanged(SensorEvent event) {
