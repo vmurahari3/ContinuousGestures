@@ -1,4 +1,4 @@
-package edu.gatech.ubicomp.continuousgestures.Learning;
+package edu.gatech.ubicomp.continuousgestures.data.learning;
 
 /**
  * Created by ubicomp on 3/14/17.
@@ -17,12 +17,12 @@ import java.util.Arrays;
 import java.util.Random;
 
 import edu.emory.mathcs.jtransforms.fft.DoubleFFT_1D;
-import edu.gatech.ubicomp.continuousgestures.Constants.Constants;
+import edu.gatech.ubicomp.continuousgestures.common.Constants;
 
 
-public class FeatureExtractionHelper
+public class FeatureExtractor
 {
-    private static final String TAG = FeatureExtractionHelper.class.getSimpleName();
+    private static final String TAG = FeatureExtractor.class.getSimpleName();
     private final static boolean DEBUG = false;
 
     PearsonsCorrelation correlationCalculator;

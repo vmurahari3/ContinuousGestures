@@ -40,4 +40,5 @@
     <string name="action_stop">Stop Recording</string>
     <string name="action_start">Start Recording</string>
     <string name="action_close_app">Close App</string>
+    <string name="no_match_found">-------------</string>
 </resources>

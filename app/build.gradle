@@ -1,12 +1,21 @@
-apply plugin: 'com.android.application'
-apply plugin: 'realm-android'
-
-repositories {
-    jcenter()
-    flatDir {
-        dirs 'prebuilt-libs'
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.0'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath "io.realm:realm-gradle-plugin:3.0.0"
     }
 }
+
+plugins {
+    id "me.tatarka.retrolambda" version "3.3.0"
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion "Google Inc.:Glass Development Kit Preview:19"
@@ -25,14 +34,15 @@ android {
         }
     }
     compileOptions {
-        targetCompatibility 1.7
-        sourceCompatibility 1.7
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
     }
 }
 
 
 repositories {
     mavenCentral()
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -44,4 +54,12 @@ dependencies {
     compile files('libs/wekaSTRIPPED.jar')
     compile files('libs/commons-io-2.5.jar')
     compile 'com.android.support:support-v4:25.3.0'
+    compile 'io.reactivex:rxjava:1.2.0'
+    compile 'com.squareup.dagger:dagger:1.2.5'
+    compile 'joda-time:joda-time:2.9.4'
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'org.parceler:parceler:1.1.6'
+    compile 'com.android.support:appcompat-v7:19.1.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    apt 'com.squareup.dagger:dagger-compiler:1.2.5'
 }

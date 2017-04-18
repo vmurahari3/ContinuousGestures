@@ -1,4 +1,4 @@
-package edu.gatech.ubicomp.continuousgestures.Constants;
+package edu.gatech.ubicomp.continuousgestures.common;
 
 import android.hardware.Sensor;
 
@@ -56,6 +56,8 @@ public final class Constants {
 
     /** List of input channel labels */
     public static final String[] GESTURE_CHANNEL_LABELS = new String[Constants.NUM_OF_CHANNELS];
+    public static final String APP_NAME = "GLAMOGE";
+
     static
     {
         int i = 0;
@@ -91,10 +93,15 @@ public final class Constants {
     public static final HashMap<Integer, String> MAP_SENSOR_TYPE_TO_NAME = new HashMap<Integer, String>();
     static
     { //Ref: http://stackoverflow.com/questions/507602/how-can-i-initialize-a-static-map
-        MAP_SENSOR_TYPE_TO_NAME.put(Sensor.TYPE_LINEAR_ACCELERATION, "LinearAccel");
+        MAP_SENSOR_TYPE_TO_NAME.put(Sensor.TYPE_LINEAR_ACCELERATION, "LinearAcceleration");
         MAP_SENSOR_TYPE_TO_NAME.put(Sensor.TYPE_GYROSCOPE, "Gyroscope");
-        MAP_SENSOR_TYPE_TO_NAME.put(Sensor.TYPE_MAGNETIC_FIELD, "Magnetometer");
-        MAP_SENSOR_TYPE_TO_NAME.put(Sensor.TYPE_ROTATION_VECTOR, "RotationVector");
+    }
+
+    public static final HashMap<String, Integer> MAP_SENSOR_NAME_TO_TYPE = new HashMap<String, Integer>();
+    static
+    { //Ref: http://stackoverflow.com/questions/507602/how-can-i-initialize-a-static-map
+        MAP_SENSOR_NAME_TO_TYPE.put("LinearAcceleration",Sensor.TYPE_LINEAR_ACCELERATION);
+        MAP_SENSOR_NAME_TO_TYPE.put("Gyroscope", Sensor.TYPE_GYROSCOPE);
     }
 
     /** Number of buckets for ECDF features*/

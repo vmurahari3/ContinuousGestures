@@ -1,4 +1,4 @@
-package edu.gatech.ubicomp.continuousgestures.Helpers;
+package edu.gatech.ubicomp.continuousgestures.data.models;
 
 /**
  * Created by ubicomp on 3/2/17.

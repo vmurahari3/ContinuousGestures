@@ -1,19 +1,36 @@
-package edu.gatech.ubicomp.continuousgestures.Helpers;
+package edu.gatech.ubicomp.continuousgestures.common;
 
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
+
+import com.google.gson.Gson;
+
+import org.joda.time.LocalDateTime;
+import org.joda.time.Period;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import edu.gatech.ubicomp.continuousgestures.Constants.Constants;
-import edu.gatech.ubicomp.continuousgestures.Learning.PeakDetection;
+import java.util.Arrays;
+import java.util.List;
+
+import edu.gatech.ubicomp.continuousgestures.MyApplication;
+import edu.gatech.ubicomp.continuousgestures.data.learning.PeakDetection;
 
 
 public class Utils
@@ -407,15 +424,15 @@ public class Utils
         try {
             JSONArray dataArr = input.getJSONArray(sensorName);
 
-                //Get a single line of data that has information for all channels.
-                JSONObject sensorDataLine = dataArr.getJSONObject(0);
+            //Get a single line of data that has information for all channels.
+            JSONObject sensorDataLine = dataArr.getJSONObject(0);
 
-                //TODO: Remove dependence on the constant
-                double[] dataLineAsArr =  Utils.jsonObject2DoubleArray(Constants.DEFAULT_CHANNEL_LABELS,sensorDataLine);
-                for (int i=0; i<Constants.DEFAULT_NUM_CHANNELS_FOR_MOTION_SENSORS; i++)
-                {
-                    result[i] = (float) dataLineAsArr[i];
-                }
+            //TODO: Remove dependence on the constant
+            double[] dataLineAsArr =  Utils.jsonObject2DoubleArray(Constants.DEFAULT_CHANNEL_LABELS,sensorDataLine);
+            for (int i=0; i<Constants.DEFAULT_NUM_CHANNELS_FOR_MOTION_SENSORS; i++)
+            {
+                result[i] = (float) dataLineAsArr[i];
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -519,6 +536,18 @@ public class Utils
         return false;
     }
 
+    public static String getJsonString(Object gsonObject){
+        return new Gson().toJson(gsonObject);
+    }
+
+    public static <T extends Object> T getObject(String jsonString, Class<T> type) {
+        return new Gson().fromJson(jsonString, type);
+    }
+
+    public static <T extends Object> List<T> getArray(String jsonString, Class<T[]> classType) {
+        return Arrays.asList(new Gson().fromJson(jsonString, classType));
+    }
+
     public static double round(Double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
@@ -526,4 +555,232 @@ public class Utils
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
+
+    public static Drawable getDeviceIconDrawableFromName(String deviceName, Resources resources)
+    {
+        String deviceIconURI = "drawable/icon_device_"+ deviceName+"_black_128dp";
+        int imageResource = resources.getIdentifier(deviceIconURI, null, MyApplication.PACKAGE_NAME);
+
+//        ImageView imageView = (ImageView) findViewById(R.id.myImageView);
+        Drawable image = resources.getDrawable(imageResource);
+
+        return image;
+    }
+
+    public static Drawable getDeviceIconDrawableFromName(String deviceName, Resources resources, String color, int size)
+    {
+        String deviceIconURI = "drawable/icon_device_"+ deviceName+"_"+color+"_"+size+"dp";
+        int imageResource = resources.getIdentifier(deviceIconURI, null, MyApplication.PACKAGE_NAME);
+
+//        ImageView imageView = (ImageView) findViewById(R.id.myImageView);
+        Drawable image = resources.getDrawable(imageResource);
+
+        return image;
+    }
+
+    public static Drawable getBodyPosIconDrawableFromName(String bodyPos, Resources resources)
+    {
+        String bodyPosJoined = bodyPos.replaceAll(" ", "_").toLowerCase();
+        String deviceIconURI = "drawable/icon_bodypos_"+ bodyPosJoined+"_black_48dp";
+        int imageResource = resources.getIdentifier(deviceIconURI, null, MyApplication.PACKAGE_NAME);
+
+//        ImageView imageView = (ImageView) findViewById(R.id.myImageView);
+        Drawable image = resources.getDrawable(imageResource);
+
+        return image;
+    }
+
+    public static Drawable getActivityIconDrawableFromName(String activity, Resources resources, String color, int size)
+    {
+        String activityIconURI = "drawable/icon_activity_"+ activity.toLowerCase()+"_"+color+"_"+size+"dp";
+        int imageResource = resources.getIdentifier(activityIconURI, null, MyApplication.PACKAGE_NAME);
+
+//        ImageView imageView = (ImageView) findViewById(R.id.myImageView);
+        Drawable image = resources.getDrawable(imageResource);
+
+        return image;
+    }
+
+
+    /**
+     * Generating model file name from class id
+     */
+    public static String generateModelFileNameFromClassId(long clsId) {
+        return "model_"+String.valueOf(clsId)+".arff";
+    }
+
+    public static void moveFile(String inputPath, String inputFile, String outputPath) {
+
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+
+            //create output directory if it doesn't exist
+            File dir = new File (outputPath);
+            if (!dir.exists())
+            {
+                dir.mkdirs();
+            }
+
+
+            in = new FileInputStream(inputPath+ '/' + inputFile);
+            out = new FileOutputStream(outputPath + '/' + inputFile);
+
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+            in.close();
+            in = null;
+
+            // write the output file
+            out.flush();
+            out.close();
+            out = null;
+
+            // delete the original file
+            new File(inputPath + inputFile).delete();
+
+
+        }
+
+        catch (FileNotFoundException fnfe1) {
+            Log.e("tag", fnfe1.getMessage());
+        }
+        catch (Exception e) {
+            Log.e("tag", e.getMessage());
+        }
+
+    }
+
+    public static void deleteFile(String inputPath, String inputFile) {
+        try {
+            // delete the original file
+            new File(inputPath + inputFile).delete();
+
+
+        }
+        catch (Exception e) {
+            Log.e("tag", e.getMessage());
+        }
+    }
+
+    public static void copyFile(String inputPath, String inputFile, String outputPath) {
+
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+
+            //create output directory if it doesn't exist
+            File dir = new File (outputPath);
+            if (!dir.exists())
+            {
+                dir.mkdirs();
+            }
+
+
+            in = new FileInputStream(inputPath +'/' + inputFile);
+            out = new FileOutputStream(outputPath +'/' + inputFile);
+
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+            in.close();
+            in = null;
+
+            // write the output file (You have now copied the file)
+            out.flush();
+            out.close();
+            out = null;
+
+        }  catch (FileNotFoundException fnfe1) {
+            Log.e("tag", fnfe1.getMessage());
+        }
+        catch (Exception e) {
+            Log.e("tag", e.getMessage());
+        }
+
+    }
+
+    public static void copyFile(String inputPath, String inputFile, String outputPath, String outputFile) {
+
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+
+            //create output directory if it doesn't exist
+            File dir = new File (outputPath);
+            if (!dir.exists())
+            {
+                dir.mkdirs();
+            }
+
+
+            in = new FileInputStream(inputPath +'/' + inputFile);
+            out = new FileOutputStream(outputPath +'/' + outputFile);
+
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+            in.close();
+            in = null;
+
+            // write the output file (You have now copied the file)
+            out.flush();
+            out.close();
+            out = null;
+
+        }  catch (FileNotFoundException fnfe1) {
+            Log.e("tag", fnfe1.getMessage());
+        }
+        catch (Exception e) {
+            Log.e("tag", e.getMessage());
+        }
+
+    }
+
+    public static String getTimeElapsedInReadableFormat(String startTimeFromDb) {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime dateTime = LocalDateTime.parse(startTimeFromDb, formatter);
+        LocalDateTime currentTime = LocalDateTime.now();
+        Period period = new Period(dateTime, currentTime);
+
+        long days = period.getDays();
+        long hours = period.getHours();
+        long minutes = period.getMinutes();
+        long seconds = period.getSeconds();
+        String duration = "";
+        if (days == 1) {
+            duration = "a day ago";
+        } else if (days > 1) {
+            duration = days + " days ago";
+        } else {
+            if (hours == 1) {
+                duration = "an hour ago";
+            } else if (hours > 1) {
+                duration = hours + " hours ago";
+            } else {
+                if (minutes == 1) {
+                    duration = "a minute ago";
+                } else if (minutes > 1) {
+                    duration = minutes + " minutes ago";
+                } else {
+                    if (seconds < 30) {
+                        duration = "just now";
+                    } else {
+                        duration = seconds + " seconds ago";
+                    }
+                }
+            }
+        }
+
+        return duration;
+    }
+
+
 }
